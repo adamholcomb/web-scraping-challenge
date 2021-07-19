@@ -12,16 +12,16 @@ hemi_url = 'https://marshemispheres.com'
 
 
 def Scrape():
-    mars_data = []
-
+    
+    executable_path = {'executable_path': ChromeDriverManager().install()}
     response = requests.get(news_url)
     soup = bs(response.text, 'html.parser')
     title = soup.find('div',class_='content_title')
     para = soup.find('div',class_='article_teaser_body')
-    return title
-    return para
+    # return title
+    # return para
 
-    browser = Browser('chrome')
+    browser = Browser('chrome', **executable_path, headless=False)
     browser.visit(image_url)
     html = browser.html
     soup = bs(html,'html.parser')
@@ -29,19 +29,19 @@ def Scrape():
     html = browser.html
     soup = bs(html,'html.parser')
     featured_image_url = url + soup.find('img',class_='fancybox-image')['src']
-    return featured_image_url
+    # return featured_image_url
     browser.quit()
 
-    browser = Browser('chrome')
+    browser = Browser('chrome', **executable_path, headless=False)
     browser.visit(table_url)
     html = browser.html
     soup = bs(html,'html.parser')
     fact_table = soup.find('table',class_='table table-striped')
     fact_table_df = pd.read_html(str(fact_table))[0]
-    return fact_table_df
+    # return fact_table_df
     browser.quit()
 
-    browser = Browser('chrome')
+    browser = Browser('chrome', **executable_path, headless=False)
     browser.visit(hemi_url)
     mars_dict = []
     for x in range(4):
@@ -52,8 +52,8 @@ def Scrape():
         html = browser.html
         soup = bs(html,'html.parser')
         hemi_image = url + "/" + soup.find('li').a['href']
-        return hemi_name
-        return hemi_image
+        # return hemi_name
+        # return hemi_image
         mars_dict.append({"title" : hemi_name, "img_url" : hemi_image})
         browser.back()
     browser.quit()
